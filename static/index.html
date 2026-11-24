@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyFlow — Bachelor Study Planner & Gemini AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-mark">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">StudyFlow</div>
+          <div class="brand-sub" id="sidebarSemester">Bachelor Planner</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-view="dashboard">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-item" data-view="charts">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          <span>Chart Overview</span>
+        </button>
+        <button class="nav-item" data-view="planner">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span>Assignments &amp; Tests</span>
+          <span class="nav-badge" id="navActiveCount">0</span>
+        </button>
+        <button class="nav-item" data-view="courses">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          <span>Courses &amp; Lectures</span>
+        </button>
+        <button class="nav-item" data-view="documents">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <span>Documents</span>
+          <span class="nav-badge subtle" id="navDocsCount">0</span>
+        </button>
+        <button class="nav-item nav-ai" data-view="overview">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z"/></svg>
+          <span>AI Lecture Overview</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="api-status-pill" id="apiStatusPill" data-view="settings" title="Configure Gemini API token">
+          <span class="status-dot" id="apiStatusDot"></span>
+          <div class="api-status-text">
+            <strong id="apiStatusTitle">Gemini API</strong>
+            <span id="apiStatusSub">Not configured</span>
+          </div>
+        </button>
+
+        <div class="sidebar-actions">
+          <button class="icon-btn" id="themeToggleBtn" title="Toggle Dark/Light Theme">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+          <button class="icon-btn" data-view="settings" title="Settings">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-area">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <h1 class="page-title" id="pageTitle">Dashboard</h1>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-ai-soft" id="quickUploadCourseDocBtn">&#10024; Upload Course Doc</button>
+          <button class="btn btn-secondary" id="quickAddAssignmentBtn">+ Assignment</button>
+          <button class="btn btn-primary" id="quickAddTestBtn">+ Upcoming Test</button>
+        </div>
+      </header>
+
+      <div class="content-scroll" id="viewContainer">
+        <!-- Dynamic views rendered here -->
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal Backdrop -->
+  <div class="modal-backdrop hidden" id="modalBackdrop">
+    <div class="modal-dialog" id="modalDialog" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <h2 id="modalTitle">Modal</h2>
+          <p class="modal-subtitle hidden" id="modalSubtitle"></p>
+        </div>
+        <button class="icon-btn modal-close" id="modalCloseBtn" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- Floating Gemini Retry Banner (visible whenever Gemini servers are busy) -->
+  <div class="retry-banner hidden" id="retryBanner" role="status" aria-live="polite">
+    <div class="retry-banner-top">
+      <div class="retry-banner-info">
+        <span class="retry-pulse-dot"></span>
+        <div>
+          <strong id="retryBannerTitle">Gemini servers are busy — Retrying...</strong>
+          <div class="retry-banner-sub" id="retryBannerSub">Attempt 2 of 5 · Retrying in 4s</div>
+        </div>
+      </div>
+      <div class="retry-banner-actions">
+        <button class="btn btn-secondary btn-sm" id="retryNowBtn" type="button">Retry Now</button>
+        <button class="btn btn-danger-ghost btn-sm" id="retryCancelBtn" type="button">Cancel</button>
+      </div>
+    </div>
+    <div class="retry-progress-track">
+      <div class="retry-progress-fill" id="retryProgressFill" style="width:100%"></div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
